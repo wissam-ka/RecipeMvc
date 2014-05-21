@@ -1,0 +1,177 @@
+﻿@using System.Data.SqlClient
+@model RecipeMvc.Models.RespComp
+@{
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutWithSidebar.cshtml";
+    
+}
+
+
+@{
+   // var resp = ViewBag.Resipe;
+    var resp = Model;
+    string pa = resp.FilePath;
+}
+@section Sidebar{
+    <h3>
+        @* <img src="~/Images/w.jpg" width="450" height="560" />*@
+        <img src="@Url.Content(pa)" width="400" height="580" />
+        
+    </h3>
+}
+<style>
+hr
+{
+float:left;
+}
+p.clear
+{
+clear:both;
+}
+</style>
+
+    <div class="resp">
+   
+        <h1 style="text-decoration:underline">@resp.Title</h1>
+        <div class="details">
+        
+           
+                <div>
+                    <h3>       
+                        <p>Cooking time:@resp.CookingTime min </p>
+                    
+                    
+               
+                        <p>for:@resp.Number  people</p>
+                        <hr style="border-bottom: solid"/>
+                        <hr class="clear"/>
+                    </h3>
+                         </div>
+                    <p>
+                    <h3>
+                    <table>
+                        <tr >
+                           
+                            <td>
+                                <table  >    
+                                    @foreach (var re in resp.Ingredients)
+                                    {
+                                    
+                                        <tr style="border-bottom:solid "  >
+                                            <td style="text-align: right;width:7em "  >
+                                                @re.Amount @re.Unit
+                                        
+                                            </td>
+                                        
+                                            <td >
+                                                @re.Name
+                                            </td>
+                                        </tr>
+                                   
+                
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+               
+            
+
+            </h3>
+            
+                <p class="current-rate">
+                    Current Rate: @Model.FRate.ToString():
+                    [@Model.RNum peolpe]
+
+                </p>
+            
+                @using (Html.BeginForm("Rate", "Resp"))
+                {
+                    var comm1 = resp.FRate;
+               
+                
+                    <span>
+                        Rate: @Html.TextBox("Comm",comm1)
+                        @Html.ValidationMessage("Comm")
+                    </span>
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("ReId",resp.Id)
+                    <input class="post-Rate" type="submit" value="Rate" />                             
+                               
+                }
+                
+                    
+                   
+                    <hr/>       
+               
+
+               </p>
+            <p class="clear">
+                 <h1>
+                        Food Preparation
+                        
+                    </h1>
+                    
+                @Html.Raw(resp.FoodPreparation.Replace("\n", "<br>"))
+            </p>
+                
+            
+     
+
+        </div>
+    </div>
+
+
+<script id="current-rate-template" type="application/htm-template">
+<p class="current-rate">
+    <span>
+        Current Rate:{{FRate}}
+    </span>
+    <span>
+        [{{NNum}} peolpe]
+    </span>
+</p>
+</script>
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function() {
+            $('.post-Rate').on("click", function() {
+
+                var form = $(this).parent("form");
+
+                $.ajax({
+                        type: "POST",
+                        url: form.attr('action'),
+
+//                        data: {Comm : $('#Comm').val()}
+                        data: form.serialize()
+                    })
+                    .success(function(data) {
+                        //alert("your rate has been submitted");
+                        var template = $('#current-rate-template').clone().html();
+                        var html =
+                            template
+                                .replace('{{FRate}}', data.FRate1)
+                                .replace('{{NNum}}', data.NNum);
+                              
+
+                        $('.current-rate').replaceWith(html);
+                    })
+                    .error(function() {
+                        alert("your rate has been rejected");
+                    });
+                return false;
+            });
+        });
+
+    </script>
+}  
+     
+    
+                       
+    
+                    

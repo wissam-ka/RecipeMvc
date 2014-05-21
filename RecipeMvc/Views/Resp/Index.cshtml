@@ -1,0 +1,30 @@
+﻿@model IEnumerable<RecipeMvc.Models.RespComp>
+
+@{
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutWithSidebar.cshtml";
+    
+}
+@section Sidebar{
+    <h3>
+        <img src="~/Images/w.jpg" width="400" height="580" />
+        
+    </h3>
+}
+
+<h2>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+</h2>
+<table>
+@foreach (var item in Model) 
+{
+    
+   @Html.Partial("_resp", item)
+    
+      
+}
+
+</table>

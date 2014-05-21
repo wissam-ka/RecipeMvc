@@ -1,0 +1,17 @@
+﻿@model RecipeMvc.Models.RespComp
+
+<div class="resp-mod">
+    <tr style="border: solid">
+        <td >
+            <h3>
+                <p  class="meat">@Model.Title </p>
+            </h3>
+
+            <p class="num">customers' rate: @Model.FRate.ToString()</p>
+             <h4 class="title">@Html.ActionLink(" Details  ","Resipe", new { id=Model.Id}) </h4>
+        </td>
+
+    </tr>
+
+</div>
+

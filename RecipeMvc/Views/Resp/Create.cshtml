@@ -1,0 +1,159 @@
+﻿@using System.Web.UI.WebControls
+@using DotNetOpenAuth.OpenId.Extensions.AttributeExchange
+@using Microsoft.Ajax.Utilities
+@using RecipeMvc.Models
+@model RecipeMvc.Models.RespComp
+
+@{
+    ViewBag.Title = "Create";
+     
+        
+}
+@*@Html.ValidationSummary(true)*@
+<h2>Create</h2>
+
+
+
+@using (Html.BeginForm("Create", "Resp", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false)
+
+    <fieldset>
+        <legend>RespComp</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)  
+       
+        <div class="editor-label">
+            @Html.Label(" Cooking Time")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CookingTime)
+            @Html.ValidationMessageFor(model => model.CookingTime) min
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Number)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Number)
+            @Html.ValidationMessageFor(model => model.Number)
+        </div>
+        @*
+        @foreach (var ingredient in Model.Ingredients)
+        {
+           *@
+          
+        <div>
+            <div class="ingrediants">
+                <div class="ingEntry">
+                    <table>
+                        <tr>
+                            <hr/>
+                            <td>
+                                <label for="Ingredients[0].Name">Ingredient Name:</label>
+  
+                                <input type="text" name="Ingredients[0].Name" />
+                            </td>
+                            <td>
+                                <label for="Ingredients[0].Amount">Amount:</label>
+                           
+                                <input type="text" name="Ingredients[0].Amount" />
+                            </td>
+                            <td>
+                                <label for="Ingredients[0].Unit">Unit:</label>
+                           
+                                <input type="text" name="Ingredients[0].Unit" />
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    
+
+                </div>
+                  
+            
+          
+            </div>  
+            <input class="IngEntries_More" type="button" value="AddoneRow" />     
+        </div>
+        <div>
+            <p>
+                @Html.Label("Preparation")
+                @Html.TextAreaFor(model=> model.FoodPreparation)
+            </p>
+        </div>
+
+        <p>
+            <input type="file" id="file" name="file" />
+            
+        </p>
+ 
+        <p>
+            
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+ 
+<script id="current-ing-template" type="application/html-template">
+ <div class="ingEntry">
+ <table>
+                        <tr>
+                        <hr>
+                            <td>
+                <label for="Ingredients[{{Identifire}}].Name">Ingredient Name:</label>
+                <input type="text" name="Ingredients[{{Identifire}}].Name" />
+                 </td>
+                            <td>
+                <label for="Ingredients[{{Identifire}}].Amount">Amount:</label>
+                <input type="text" name="Ingredients[{{Identifire}}].Amount" />
+                 </td>
+                            <td>
+                <label for=".Ingredients[{{Identifire}}].Unit">Unit:</label>
+                <input type="text" name="Ingredients[{{Identifire}}].Unit" />
+                 </td>
+                            
+            </div>
+</script>                   
+              
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+   
+
+
+      <script type="text/javascript">
+        
+        $(function () {
+            $('.IngEntries_More').on("click", function () {
+
+
+            var newrow = $('#current-ing-template').clone();
+                // $(this).parents('.ingredient-row').parent().append('#template-ing');
+
+                //                  $(this).parents('.ingredient-row').remove();
+                var NLId=$('.ingEntry').size();
+                        var template = $('#current-ing-template').clone().html();
+                        var html =
+                            template
+
+                                .replace(/{{Identifire}}/g, NLId);
+
+                        $('.ingEntry').parent().append(html);
+                    
+
+            });
+        });
+
+    </script>
+}
+

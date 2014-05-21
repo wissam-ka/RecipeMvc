@@ -1,0 +1,33 @@
+﻿@using System.Web.UI.WebControls
+@using DotNetOpenAuth.OpenId.Extensions.AttributeExchange
+@using Microsoft.Ajax.Utilities
+@using RecipeMvc.Models
+@model RecipeMvc.Models.RespComp
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <div class="editor-label">
+            @Html.Label("Categories")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("category", (SelectList)ViewBag.searchlist)
+          
+        </div>
+        <div class="editor-label">
+            @Html.Label("Value")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("searchPattern", "")
+             @Html.ValidationMessage("searchPattern") 
+        </div>
+        <p>
+            <input type="submit" value="Search" />
+        </p>
+   
+    </fieldset>
+}
